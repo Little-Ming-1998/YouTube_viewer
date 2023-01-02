@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Youtube Viewers</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.1.1/font/qweather-icons.css">
+</head>
+
+<body translate="no" onload="get_info()">
+
+  <div style="background-color: rgba(139, 0, 0, 0.9); color: white"><div id="output_yt_channel_name" style="display: none; font-size: 30px; font-family: '黑体'; text-align:center; color: white; display: inline-block; border-radius: 0px; padding: 5px 5px; white-space: pre;"></div></div>
+  <div style="background-color: rgba(168, 115, 35, 0.9); color: white"><div id="output_Viewers" style="display: none; font-size: 30px; font-family: '黑体'; text-align:center; color: white; display: inline-block; border-radius: 0px; padding: 5px 5px; white-space: pre;"></div></div>
+  
+  <script src="https://fastly.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+
+
+
+<script>
+var urlParams;
+(function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+
+    urlParams = {};
+    while (match = search.exec(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+})();
+
+function get_ytid(){
+    let ytid = urlParams["ytid"];
+    let key = urlParams["key"];
+    if(ytid == '')
+    return;
+    else{
+        return [ytid, key];
+    }
+}
+var yt_channel_name;
+var yt_viewers;
+function get_info(){
+    $.ajax({
+        url: `https://www.googleapis.com/youtube/v3/videos?id=${get_ytid()[0]}&key=${get_ytid()[1]}&part=snippet,liveStreamingDetails`,
+        type: 'get',
+        dataType: 'json',
+        success: function(data)
+        {
+            yt_channel_name = data.items[0].snippet.channelTitle;
+            yt_viewers = data.items[0].liveStreamingDetails.concurrentViewers;
+            $("#output_yt_channel_name").text(`频道号：${yt_channel_name}`);
+            $("#output_Viewers").text(`同接数：${yt_viewers}`);
+        }
+    })
+}
+setInterval(w = function()
+    {
+        get_info();
+    },30000)
+</script>
+
+</body>
+
+</html>
