@@ -50,8 +50,9 @@ function get_info(){
         {
             yt_channel_name = data.items[0].snippet.channelTitle;
             yt_viewers = data.items[0].liveStreamingDetails.concurrentViewers;
+            typeof(yt_viewers) == undefined ? $("#output_Viewers").text(`未广播`) : $("#output_Viewers").text(`同接数：${yt_viewers}`);
             $("#output_yt_channel_name").text(`频道号：${yt_channel_name}`);
-            $("#output_Viewers").text(`同接数：${yt_viewers}`);
+            //$("#output_Viewers").text(`同接数：${yt_viewers}`);
         }
     })
 }
