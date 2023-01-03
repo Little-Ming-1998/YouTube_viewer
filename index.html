@@ -49,7 +49,7 @@ function get_info(){
         success: function(data)
         {
             yt_channel_name = data.items[0].snippet.channelTitle;
-            yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers == undefined) ? `状态：没有广播` : `同接数：${data.items[0].liveStreamingDetails.concurrentViewers}`;
+            yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers) == undefined ? `状态：没有广播` : `同接数：${data.items[0].liveStreamingDetails.concurrentViewers}`;
             $("#output_yt_channel_name").text(`频道号：${yt_channel_name}`);
             $("#output_Viewers").text(`${yt_viewers}`);
             console.log(`${yt_channel_name}  ${data.items[0].liveStreamingDetails.concurrentViewers}`)
