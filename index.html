@@ -7,12 +7,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/qweather-icons@1.1.1/font/qweather-icons.css">
 </head>
 
-<body translate="no" onload="get_info()">
+<body translate="no" onload="get_info(),get_pic(),init()">
+    <div id="aa" style="display: none">
+    <div id="output_yt_channel_pic" style="display: inline-block; vertical-align:-11px;"><img src="https://holodex.net/statics/channelImg/UCa9Y57gfeY0Zro_noHRVrnw/100.png" width="100" height="100" style="border-radius:50%; overflow:hidden;">&nbsp;&nbsp;</div>
 
-  <div style="background-color: rgba(139, 0, 0, 0.9); color: white"><div id="output_yt_channel_name" style="display: none; font-size: 30px; font-family: '黑体'; text-align:center; color: white; display: inline-block; border-radius: 0px; padding: 5px 5px; white-space: pre;"></div></div>
-  <div style="background-color: rgba(168, 115, 35, 0.9); color: white"><div id="output_Viewers" style="display: none; font-size: 30px; font-family: '黑体'; text-align:center; color: white; display: inline-block; border-radius: 0px; padding: 5px 5px; white-space: pre;"></div></div>
-  
-  <script src="https://fastly.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+    <div id="output_Viewers" style="font-size: 30px; font-family: '黑体'; text-align:center; color: white; display: inline-block; border-radius: 0px; padding: 5px 5px; white-space: pre; background-color: hsla(0, 97%, 41%, 0.8); color: white"><img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/visible--v1.png" style="margin-right:5px;display:inline-block;vertical-align:-3.5px"/></div>
+    </div>
+    
+    <script src="https://fastly.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
 
 
 
@@ -30,18 +32,24 @@ var urlParams;
        urlParams[decode(match[1])] = decode(match[2]);
 })();
 
+//var ytid;
 function get_ytid(){
     let ytid = urlParams["v"];
     let key = urlParams["key"];
     if(ytid == '')
     return;
     else{
+        //console.log(`${ytid}  ${key}`)
         return [ytid, key];
     }
 }
 var yt_channel_name;
+var yt_channel_id;
 var yt_viewers;
 function get_info(){
+    if(typeof(get_ytid()[0]) == 'undefined') {
+        return;    
+    }
     $.ajax({
         url: `https://www.googleapis.com/youtube/v3/videos?id=${get_ytid()[0]}&key=${get_ytid()[1]}&part=snippet,liveStreamingDetails`,
         type: 'get',
@@ -49,13 +57,27 @@ function get_info(){
         success: function(data)
         {
             yt_channel_name = data.items[0].snippet.channelTitle;
-            yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers) == 'undefined' ? `状态：没有广播` : `同接数：${data.items[0].liveStreamingDetails.concurrentViewers}`;
-            $("#output_yt_channel_name").text(`频道号：${yt_channel_name}`);
-            $("#output_Viewers").text(`${yt_viewers}`);
-            console.log(`${yt_channel_name}  ${data.items[0].liveStreamingDetails.concurrentViewers}`)
+            yt_channel_id = data.items[0].snippet.channelId;
+            yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers) == 'undefined' ? `未开始广播` : `<img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/visible--v1.png" style="margin-right:5px;display:inline-block;vertical-align:-3.5px"/> ${data.items[0].liveStreamingDetails.concurrentViewers}`;
+            $("#output_Viewers").html(`${yt_viewers}`);
+            console.log(`${yt_channel_name}  ${yt_viewers}`);
         }
     })
 }
+
+function get_pic(){
+    setTimeout(function(){
+        if(get_ytid()[0] != 'undefined')
+        $("#output_yt_channel_pic").html(`<img src="https://holodex.net/statics/channelImg/${yt_channel_id}/100.png" width="100" height="100" style="border-radius:50%; overflow:hidden;">&nbsp;&nbsp;`)
+    },1000)
+}
+
+function init(){
+    setTimeout(function(){
+      $("#aa").fadeIn(800);
+    },2000)
+}
+
 setInterval(w = function()
     {
         get_info();
