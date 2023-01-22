@@ -60,7 +60,7 @@ function get_info(){
             yt_channel_id = data.items[0].snippet.channelId;
             yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers) == 'undefined' ? `未开始广播` : `<img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/visible--v1.png" style="margin-right:5px;display:inline-block;vertical-align:-3.5px"/> ${data.items[0].liveStreamingDetails.concurrentViewers}`;
             $("#output_Viewers").html(`${yt_viewers}`);
-            console.log(`${yt_channel_name}  ${yt_viewers}`);
+            //console.log(`${yt_channel_name}  ${yt_viewers}`);
         }
     })
 }
