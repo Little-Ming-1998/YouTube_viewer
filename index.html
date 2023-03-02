@@ -48,7 +48,11 @@ var yt_channel_id;
 var yt_viewers;
 function get_info(){
     if(typeof(get_ytid()[0]) == 'undefined') {
-        alert("请提供谷歌云密钥");
+        alert("未设置视频ID");
+        return;    
+    }
+    if(typeof(get_ytid()[1]) == 'undefined') {
+        alert("未设置YouTube Data API密钥");
         return;    
     }
     $.ajax({
