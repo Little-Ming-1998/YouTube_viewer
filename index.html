@@ -46,6 +46,7 @@ function get_ytid(){
 var yt_channel_name;
 var yt_channel_id;
 var yt_viewers;
+var flag = 0;
 function get_info(){
     if(typeof(get_ytid()[0]) == 'undefined') {
         alert("未设置视频ID");
@@ -65,7 +66,8 @@ function get_info(){
             yt_channel_id = data.items[0].snippet.channelId;
             yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers) == 'undefined' ? `未开始广播` : `<img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/visible--v1.png" style="margin-right:5px;display:inline-block;vertical-align:-3.5px"/> ${data.items[0].liveStreamingDetails.concurrentViewers}`;
             $("#output_Viewers").html(`${yt_viewers}`);
-            get_pic();
+            if(flag == 0) get_pic();
+            flag = 1;
         }
     })
 }
