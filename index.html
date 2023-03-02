@@ -60,16 +60,13 @@ function get_info(){
             yt_channel_id = data.items[0].snippet.channelId;
             yt_viewers = typeof(data.items[0].liveStreamingDetails.concurrentViewers) == 'undefined' ? `未开始广播` : `<img src="https://img.icons8.com/ios-glyphs/30/FFFFFF/visible--v1.png" style="margin-right:5px;display:inline-block;vertical-align:-3.5px"/> ${data.items[0].liveStreamingDetails.concurrentViewers}`;
             $("#output_Viewers").html(`${yt_viewers}`);
-            //console.log(`${yt_channel_name}  ${yt_viewers}`);
+            get_pic();
         }
     })
 }
 
 function get_pic(){
-    setTimeout(function(){
-        if(get_ytid()[0] != 'undefined')
         $("#output_yt_channel_pic").html(`<img src="https://holodex.net/statics/channelImg/${yt_channel_id}/100.png" width="100" height="100" style="border-radius:50%; overflow:hidden;">&nbsp;&nbsp;`)
-    },1000)
 }
 
 function init(){
