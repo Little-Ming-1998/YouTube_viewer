@@ -48,6 +48,7 @@ var yt_channel_id;
 var yt_viewers;
 function get_info(){
     if(typeof(get_ytid()[0]) == 'undefined') {
+        alert("请提供谷歌云密钥");
         return;    
     }
     $.ajax({
